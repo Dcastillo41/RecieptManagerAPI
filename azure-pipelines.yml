@@ -1,0 +1,32 @@
+trigger:
+  - development
+
+pool:
+  vmImage: "windows-latest"
+
+steps:
+  - task: DotNetCoreCLI@2
+    displayName: "Compile Project"
+    inputs:
+      command: publish
+      publishWebProjects: false
+      projects: "**/ChatbotEngine/*.csproj"
+      zipAfterPublish: true
+      modifyOutputPath: true
+
+   #-task: DotNetCoreCLI@2
+    #displayName: 'dotnet tests'
+    #inputs:
+     # command: test
+      #projects: '**/*Tests/*.csproj'
+      #cdarguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
+  
+  - task: AzureRmWebAppDeployment@4
+    displayName: "Deploy to Stage Slot"
+    inputs:
+      ConnectionType: 'AzureRM'
+      azureSubscription: 'Mi primera subscripcion de Azure(1)(238ca010-f875-4ebe-b5d0-1006ab33e7b9)'
+      appType: 'webApp'
+      WebAppName: 'recieptManager'
+      packageForLinux: '$(System.DefaultWorkingDirectory)/RecieptManagerAPI/**/*.zip'
+      AppSettings: '-ASPNETCORE_ENVIRONMENT Development'
