@@ -10,7 +10,7 @@ steps:
     inputs:
       command: publish
       publishWebProjects: false
-      projects: "**/ChatbotEngine/*.csproj"
+      projects: "**/RecieptManagerAPI/*.csproj"
       zipAfterPublish: true
       modifyOutputPath: true
 
