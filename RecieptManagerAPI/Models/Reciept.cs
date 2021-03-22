@@ -24,10 +24,9 @@ namespace RecieptManagerAPI.Models
         public string Coin { get; set;}
         
         [Required]
-        [JsonProperty("dateTime")]
-        public string DateTime { get; set; }
+        [JsonProperty("dateOf")]
+        public string DateOf { get; set; }
         
-        [Required]
         [JsonProperty("userName")]
         public string UserName { get; set; }
         

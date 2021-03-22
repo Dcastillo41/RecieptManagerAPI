@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 
+using RecieptManagerAPI.Config;
 using RecieptManagerAPI.Services;
 using RecieptManagerAPI.Controllers;
 
@@ -30,11 +31,16 @@ namespace RecieptManagerAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddApplicationInsightsTelemetry();
+            
             services.AddSwaggerGen(config => {
                 config.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo {
                     Title = "RecieptManagerAPI", Version = "v1"
                 });
             });
+
+            var databaseConfig = Configuration.GetSection(DatabaseConfig.Name).Get<DatabaseConfig>();
+            services.AddSingleton(databaseConfig);
 
             services.AddControllers();
 
