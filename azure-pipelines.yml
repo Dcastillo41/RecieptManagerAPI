@@ -1,5 +1,5 @@
 trigger:
-  - main
+  - master
 
 pool:
   vmImage: "windows-latest"
@@ -14,12 +14,12 @@ steps:
       zipAfterPublish: true
       modifyOutputPath: true
 
-   #-task: DotNetCoreCLI@2
-    #displayName: 'dotnet tests'
-    #inputs:
-     # command: test
-      #projects: '**/*Tests/*.csproj'
-      #cdarguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
+  - task: DotNetCoreCLI@2
+    displayName: 'Unit Tests'
+    inputs:
+      command: test
+      projects: '**/*UnitTests/*UnitTests.csproj'
+
   
   - task: AzureRmWebAppDeployment@4
     displayName: "Deploy to Stage Slot"
@@ -30,3 +30,9 @@ steps:
       WebAppName: 'recieptManager'
       packageForLinux: '$(System.DefaultWorkingDirectory)/RecieptManagerAPI/**/*.zip'
       AppSettings: '-ASPNETCORE_ENVIRONMENT Development'
+  
+  - task: DotNetCoreCLI@2
+    displayName: 'E2E Tests'
+    inputs:
+      command: test
+      projects: '**/*E2ETests/*E2ETests.csproj'
